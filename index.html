@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi Economía Naranja</title>
+
+  <!-- Modern Font: Montserrat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+  <!-- Grain overlay for photographic background noise -->
+  <div class="grain-overlay"></div>
+
+  <!-- ThreeJS Canvas (fixed on background) -->
+  <canvas id="webgl-canvas"></canvas>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hero" id="hero">
+      <div class="hero-content">
+        <p class="hero-intro">Hola, estos son mis datos de</p>
+        <h1 class="hero-title-outline">Consumo en la</h1>
+        <h1 class="hero-title-filled">Economía Naranja</h1>
+      </div>
+
+      <!-- Scroll Indicator (Animating Mouse) -->
+      <div class="scroll-indicator">
+        <div class="mouse"></div>
+      </div>
+    </section>
+
+    <!-- SECTION 0.5: Definition -->
+    <section class="definition-section" id="section-definition"
+      style="flex-direction: row; align-items: center; padding-top: 5rem;">
+      <div class="content-left">
+        <h2 style="font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 2rem; text-transform: uppercase;">¿Qué es?</h2>
+        <p style="font-size: clamp(1.2rem, 2vw, 1.5rem); line-height: 1.8; max-width: 700px;">
+          La Economía Naranja, también conocida de manera más amplia como la Economía Creativa, es un modelo económico
+          en el cual los bienes y servicios tienen un valor intelectual y comercial derivado de <span class="cyan-text"
+            style="font-weight: 700;">las ideas, la creatividad, la cultura y el conocimiento</span>.
+        </p>
+      </div>
+      <!-- 3D Conceptual space -->
+      <div class="content-right" id="definition-container" style="flex: 1; height: 400px; position: relative;">
+      </div>
+    </section>
+
+    <!-- SECTION 1: General Chart (Interactive 3D space on the right) -->
+    <section class="chart-section" id="section-chart">
+      <div class="content-left">
+        <h2>Mi Distribución de Consumo</h2>
+        <div class="labels">
+          <div class="pill cyan-border">60% Creaciones Funcionales</div>
+          <div class="pill red-border">25% Industrias Culturales</div>
+          <div class="pill white-border">15% Artes y Patrimonio</div>
+        </div>
+      </div>
+      <!-- Right space is for the 3D Donut Chart rendered in canvas -->
+      <div class="content-right" id="chart-container">
+        <!-- Floating Tooltip for 3D interaction -->
+        <div id="tooltip" class="tooltip"></div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: Consumption Breakdown -->
+    <section class="breakdown-section" id="section-breakdown" style="padding-top: 5rem;">
+
+      <!-- ARTES Y PATRIMONIO -->
+      <div class="main-area" style="border-top-color: var(--text-primary);">
+        <div class="percentage-3d" id="arts-percentage"
+          style="position: absolute; top: 1rem; right: 1rem; width: 120px; height: 120px;"></div>
+        <h2 class="area-title white-text">Artes y Patrimonio</h2>
+        <p class="area-subtitle">Educación</p>
+
+        <!-- Arte y Medios Digitales (Interactive Nodes Space) -->
+        <div class="category" style="margin-bottom: 0;">
+          <div class="section-title-wrapper">
+            <hr class="title-line white-line">
+            <h3 class="white-text">Arte y Medios Digitales</h3>
+            <hr class="title-line white-line">
+          </div>
+          <p class="subtitle">Mis referencias: De consumidor a productor</p>
+          <div class="nodes-container" id="nodes-container">
+            <!-- Central Node -->
+            <div class="node central-node tilt-card" data-tilt data-tilt-scale="1.1">Yo<br /><span
+                style="font-size: 0.8rem; font-weight: normal; color: #fff;">(Consumo -> Producción)</span></div>
+            <!-- References -->
+            <div class="node ref-node node-1 tilt-card" data-tilt>Bruno Simon</div>
+            <div class="node ref-node node-2 tilt-card" data-tilt>MiduDev</div>
+            <div class="node ref-node node-3 tilt-card" data-tilt>Nate Gentile</div>
+            <!-- SVG Connecting lines -->
+            <svg class="node-edges" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+              <line x1="50%" y1="50%" x2="20%" y2="20%" stroke="#FF003C" stroke-width="2" stroke-dasharray="6,6" />
+              <line x1="50%" y1="50%" x2="80%" y2="30%" stroke="#FF003C" stroke-width="2" stroke-dasharray="6,6" />
+              <line x1="50%" y1="50%" x2="50%" y2="80%" stroke="#FF003C" stroke-width="2" stroke-dasharray="6,6" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- INDUSTRIAS CULTURALES -->
+      <div class="main-area" style="border-top-color: var(--red);">
+        <div class="percentage-3d" id="culture-percentage"
+          style="position: absolute; top: 1rem; right: 1rem; width: 120px; height: 120px;"></div>
+        <h2 class="area-title red-text">Industrias Culturales</h2>
+        <p class="area-subtitle">Fonográfica</p>
+
+        <!-- Industrias Culturales (Audio Visualizer & Spotify) -->
+        <div class="category audio-category" style="margin-bottom: 0;">
+          <div class="section-title-wrapper">
+            <hr class="title-line" style="background: var(--red); box-shadow: 0 0 10px rgba(255, 0, 60, 0.5);">
+            <h3 class="red-text">Música y Podcasts</h3>
+            <hr class="title-line" style="background: var(--red); box-shadow: 0 0 10px rgba(255, 0, 60, 0.5);">
+          </div>
+          <p class="subtitle">Consumo diario y productivo como inspiración</p>
+
+          <!-- Spotify Playlist Embed -->
+          <div class="spotify-container" style="margin-bottom: 2rem;">
+            <iframe data-testid="embed-iframe" style="border-radius:12px"
+              src="https://open.spotify.com/embed/playlist/2IukrTykRgRNG6dRvKOg35?utm_source=generator&theme=0"
+              width="100%" height="352" frameBorder="0" allowfullscreen=""
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy"></iframe>
+          </div>
+
+          <div class="audio-visualizer" id="audio-visualizer">
+            <!-- Audio bars are generated via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- CREACIONES FUNCIONALES -->
+      <div class="main-area" style="border-top-color: var(--cyan);">
+        <div class="percentage-3d" id="functional-percentage"
+          style="position: absolute; top: 1rem; right: 1rem; width: 120px; height: 120px;"></div>
+        <h2 class="area-title cyan-text" style="font-size: clamp(1.5rem, 3vw, 2.8rem); margin-right: 120px;">Creaciones
+          Funcionales, Nuevos
+          Medios y Software de Contenidos</h2>
+        <p class="area-subtitle">Medios Digitales</p>
+
+        <!-- Software y Apps -->
+        <div class="category apps-category">
+          <div class="section-title-wrapper">
+            <hr class="title-line cyan-line">
+            <h3 class="cyan-text">Software y Apps</h3>
+            <hr class="title-line cyan-line">
+          </div>
+          <p class="subtitle">Aprendizaje constante, Redes y Contenido Digital</p>
+
+          <!-- Apps 3D Container Space -->
+          <div class="spacer-3d" id="apps-container" style="height: 300px;"></div>
+
+          <!-- Duolingo 3D Element Space -->
+          <p class="subtitle"
+            style="text-align: center; color: var(--cyan); font-weight: bold; margin-bottom: -1rem; margin-top: 1rem;">
+            ¡970 Días de Racha en Duolingo!</p>
+          <div class="spacer-3d" id="duolingo-container" style="height: 250px;"></div>
+        </div>
+
+        <!-- Videojuegos (Glassmorphism & Tilt Cards) -->
+        <div class="category games-category" style="margin-bottom: 0;">
+          <div class="section-title-wrapper">
+            <hr class="title-line cyan-line">
+            <h3 class="cyan-text">Videojuegos</h3>
+            <hr class="title-line cyan-line">
+          </div>
+          <p class="subtitle">Entretenimiento táctico y destreza</p>
+          <div class="cards-container">
+            <div class="glass-card tilt-card" data-tilt data-tilt-glare data-tilt-max-glare="0.5">
+              <div class="card-content">
+                <h4>COD<br>Warzone</h4>
+              </div>
+            </div>
+            <div class="glass-card tilt-card" data-tilt data-tilt-glare data-tilt-max-glare="0.5">
+              <div class="card-content">
+                <h4>Rocket<br>League</h4>
+              </div>
+            </div>
+            <div class="glass-card tilt-card" data-tilt data-tilt-glare data-tilt-max-glare="0.5">
+              <div class="card-content">
+                <h4>Cuphead</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-content">
+        <hr class="divider cyan-bg">
+        <!-- Sponsoring/Related Brands -->
+        <hr class="divider red-bg">
+        <p class="footer-text">© 2026 - Consumo en la Economía Naranja</p>
+      </div>
+    </footer>
+  </main>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>
